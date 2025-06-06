@@ -53,7 +53,7 @@
   <h1>Welcome to TVZ Pitch Competition</h1>
   <p>Please agree to the terms and enter your email to continue.</p>
 
-  <form action="https://script.google.com/macros/s/AKfycby6fiBgNPC0Fq8xB8Zefh5H9thq68npvTV18dFvFvfqmpZ7hpPIvFBYOH2yI2nLlpI7uQ/exec" method="POST">
+  <form action="https://script.google.com/macros/s/AKfycbyNKWesS1E6egQL0cr60xKsUYnZYWAomnCBRSNA3RcQguf6LsYx8v8PM61HowTVbIr_RA/exec" method="POST">
     <input type="email" name="email" placeholder="Enter your email address" required><br>
 
     <label>
@@ -61,7 +61,7 @@
       I agree to the <a href="#" target="_blank">Terms & Conditions</a>
     </label><br>
 
-    <!-- Meraki hidden parameters -->
+    <!-- Meraki-required hidden fields -->
     <input type="hidden" name="base_grant_url" id="base_grant_url">
     <input type="hidden" name="user_continue_url" id="user_continue_url" value="https://computek.edu">
     <input type="hidden" name="node_id" id="node_id">
@@ -72,12 +72,12 @@
   </form>
 
   <script>
-    // Populate hidden fields from URL query params (injected by Meraki)
+    // Populate hidden fields from Meraki parameters
     const params = new URLSearchParams(window.location.search);
     for (const name of ['base_grant_url', 'user_continue_url', 'node_id', 'client_ip', 'client_mac']) {
-      const field = document.getElementById(name);
-      if (field && params.has(name)) {
-        field.value = params.get(name);
+      const input = document.getElementById(name);
+      if (input && params.has(name)) {
+        input.value = params.get(name);
       }
     }
   </script>
