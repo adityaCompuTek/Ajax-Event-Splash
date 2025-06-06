@@ -47,6 +47,13 @@
     a {
       color: #66ccff;
     }
+    img.logo {
+      margin-top: 20px;
+      max-width: 150px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
 </head>
 <body>
@@ -58,10 +65,13 @@
 
     <label>
       <input type="checkbox" id="terms" required>
-      I agree to the <a href="#" target="_blank">Terms & Conditions</a>
+      I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a>
     </label><br>
 
     <input type="submit" value="Connect to WiFi">
+
+    <!-- 🔥 369Global Logo below submit -->
+    <img class="logo" src="https://adityaCompuTek.github.io/Ajax-Event-Splash/logo.png" alt="369Global Logo">
 
     <!-- Meraki parameters -->
     <input type="hidden" id="base_grant_url">
