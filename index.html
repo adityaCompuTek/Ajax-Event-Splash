@@ -2,9 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test Page</title>
+  <title>TVZ Pitch Competition</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #ffffff;
+      text-align: center;
+      padding: 40px;
+    }
+    form {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 400px;
+      width: 100%;
+    }
+    input[type="email"],
+    input[type="submit"] {
+      padding: 12px;
+      width: 90%;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="email"] {
+      background-color: #fff;
+      color: #000;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    a {
+      color: #66ccff;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello from S3!</h1>
+  <h1>Welcome to TVZ Pitch Competition</h1>
+  <p>Please agree to the terms and enter your email to continue.</p>
+
+  <form action="https://script.google.com/macros/s/AKfycby6fiBgNPC0Fq8xB8Zefh5H9thq68npvTV18dFvFvfqmpZ7hpPIvFBYOH2yI2nLlpI7uQ/exec" method="POST">
+    <input type="email" name="email" placeholder="Enter your email address" required><br>
+
+    <label>
+      <input type="checkbox" name="terms" required>
+      I agree to the <a href="#" target="_blank">Terms & Conditions</a>
+    </label><br>
+
+    <!-- Meraki hidden parameters -->
+    <input type="hidden" name="base_grant_url" id="base_grant_url">
+    <input type="hidden" name="user_continue_url" id="user_continue_url" value="https://computek.edu">
+    <input type="hidden" name="node_id" id="node_id">
+    <input type="hidden" name="client_ip" id="client_ip">
+    <input type="hidden" name="client_mac" id="client_mac">
+
+    <input type="submit" value="Connect to WiFi">
+  </form>
+
+  <script>
+    // Populate hidden fields from URL query params (injected by Meraki)
+    const params = new URLSearchParams(window.location.search);
+    for (const name of ['base_grant_url', 'user_continue_url', 'node_id', 'client_ip', 'client_mac']) {
+      const field = document.getElementById(name);
+      if (field && params.has(name)) {
+        field.value = params.get(name);
+      }
+    }
+  </script>
 </body>
 </html>
