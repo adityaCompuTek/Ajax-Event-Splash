@@ -61,11 +61,25 @@
       I agree to the <a href="#" target="_blank">Terms & Conditions</a>
     </label><br>
 
-    <input type="hidden" name="base_grant_url" value="">
-    <input type="hidden" name="user_continue_url" value="https://computek.edu">
+    <!-- Meraki hidden parameters -->
+    <input type="hidden" name="base_grant_url" id="base_grant_url">
+    <input type="hidden" name="user_continue_url" id="user_continue_url" value="https://computek.edu">
+    <input type="hidden" name="node_id" id="node_id">
+    <input type="hidden" name="client_ip" id="client_ip">
+    <input type="hidden" name="client_mac" id="client_mac">
 
     <input type="submit" value="Connect to WiFi">
   </form>
 
+  <script>
+    // Populate hidden fields from URL query params (injected by Meraki)
+    const params = new URLSearchParams(window.location.search);
+    for (const name of ['base_grant_url', 'user_continue_url', 'node_id', 'client_ip', 'client_mac']) {
+      const field = document.getElementById(name);
+      if (field && params.has(name)) {
+        field.value = params.get(name);
+      }
+    }
+  </script>
 </body>
 </html>
