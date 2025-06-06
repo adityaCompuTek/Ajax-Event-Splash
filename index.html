@@ -53,31 +53,58 @@
   <h1>Welcome to TVZ Pitch Competition</h1>
   <p>Please agree to the terms and enter your email to continue.</p>
 
-  <form action="https://script.google.com/macros/s/AKfycbyNKWesS1E6egQL0cr60xKsUYnZYWAomnCBRSNA3RcQguf6LsYx8v8PM61HowTVbIr_RA/exec" method="POST">
-    <input type="email" name="email" placeholder="Enter your email address" required><br>
+  <form id="splashForm" onsubmit="handleSubmit(event)">
+    <input type="email" id="email" name="email" placeholder="Enter your email address" required><br>
 
     <label>
-      <input type="checkbox" name="terms" required>
+      <input type="checkbox" id="terms" required>
       I agree to the <a href="#" target="_blank">Terms & Conditions</a>
     </label><br>
 
-    <!-- Meraki-required hidden fields -->
-    <input type="hidden" name="base_grant_url" id="base_grant_url">
-    <input type="hidden" name="user_continue_url" id="user_continue_url" value="https://computek.edu">
-    <input type="hidden" name="node_id" id="node_id">
-    <input type="hidden" name="client_ip" id="client_ip">
-    <input type="hidden" name="client_mac" id="client_mac">
-
     <input type="submit" value="Connect to WiFi">
+
+    <!-- Meraki parameters -->
+    <input type="hidden" id="base_grant_url">
+    <input type="hidden" id="user_continue_url" value="https://computek.edu">
   </form>
 
   <script>
-    // Populate hidden fields from Meraki parameters
     const params = new URLSearchParams(window.location.search);
-    for (const name of ['base_grant_url', 'user_continue_url', 'node_id', 'client_ip', 'client_mac']) {
-      const input = document.getElementById(name);
-      if (input && params.has(name)) {
-        input.value = params.get(name);
+    const baseGrantUrl = params.get("base_grant_url");
+    const continueUrl = params.get("user_continue_url") || "https://computek.edu";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyNKWesS1E6egQL0cr60xKsUYnZYWAomnCBRSNA3RcQguf6LsYx8v8PM61HowTVbIr_RA/exec";
+
+    document.getElementById("base_grant_url").value = baseGrantUrl;
+    document.getElementById("user_continue_url").value = continueUrl;
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const terms = document.getElementById("terms").checked;
+
+      if (!email || !terms) {
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      try {
+        await fetch(scriptURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({ email })
+        });
+      } catch (err) {
+        console.warn("Logging failed, but still redirecting...");
+      }
+
+      // Redirect to Meraki to grant internet
+      if (baseGrantUrl) {
+        window.location.href = `${baseGrantUrl}?continue_url=${encodeURIComponent(continueUrl)}`;
+      } else {
+        alert("Error: Meraki access URL not available.");
       }
     }
   </script>
