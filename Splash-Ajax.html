@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TVZ Pitch Competition</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #ffffff;
+      text-align: center;
+      padding: 40px;
+    }
+    form {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 400px;
+      width: 100%;
+    }
+    input[type="email"],
+    input[type="submit"] {
+      padding: 12px;
+      width: 90%;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="email"] {
+      background-color: #fff;
+      color: #000;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    a {
+      color: #66ccff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to TVZ Pitch Competition</h1>
+  <p>Please agree to the terms and enter your email to continue.</p>
+
+  <form id="splashForm" onsubmit="submitForm(); return false;">
+    <input type="email" id="email" placeholder="Enter your email address" required><br>
+
+    <label>
+      <input type="checkbox" id="terms" required>
+      I agree to the <a href="#" target="_blank">Terms & Conditions</a>
+    </label><br>
+
+    <input type="submit" value="Connect to WiFi">
+  </form>
+
+  <script>
+    async function submitForm() {
+      const email = document.getElementById("email").value;
+      const terms = document.getElementById("terms").checked;
+
+      if (!email || !terms) {
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwHUVUxKoIlV5atkauhwxWp0znqtvy1V7XQjG6fUlX32GMYy3lJkpaFGqaufxqSXYIs/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: email })
+        });
+
+        const result = await response.text();
+
+        if (result.toLowerCase().includes("success")) {
+          window.location.href = "https://computek.edu";
+        } else {
+          alert("Server responded with an error: " + result);
+        }
+      } catch (error) {
+        alert("Network error: " + error.message);
+        console.error("Fetch error:", error);
+      }
+    }
+  </script>
+</body>
+</html>
